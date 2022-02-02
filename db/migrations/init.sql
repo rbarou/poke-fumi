@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS users (
+  user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name    TEXT NOT NULL UNIQUE,
+  password TEXT NOT NULL,
+  score   INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS match (
+  match_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  user1 INTEGER NOT NULL,
+  user2 INTEGER NOT NULL,
+  CONSTRAINT fk_user
+    FOREIGN KEY (user1,user2)
+    REFERENCES users(user_id,user_id)
+);
+
+CREATE TABLE IF NOT EXISTS invitation(
+  invitation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sender INTEGER NOT NULL,
+  match INTEGER NOT NULL,
+  CONSTRAINT fk_user_match
+    FOREIGN KEY (sender) REFERENCES users(user_id)
+    FOREIGN KEY (match) REFERENCES match(match_id)
+);
