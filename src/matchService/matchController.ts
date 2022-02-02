@@ -1,4 +1,4 @@
-import { Match, User } from './model'
+import { Match, User } from '../model/model'
 import MatchRepository from './matchRepository'
 
 const dbMatches: MatchRepository = new MatchRepository();

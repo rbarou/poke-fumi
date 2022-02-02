@@ -1,4 +1,3 @@
-import { User } from './model'
 import UserRepository from './userRepository'
 import jwt = require('jsonwebtoken');
 

@@ -1,10 +1,8 @@
 import * as express from "express"
-import * as UserController from "./userController"
-import * as InvitationController from './invitationController'
-import * as MatchController from './matchController'
-import { User, Match, Invitation } from './model'
-import { checkJWT } from "./authenticateJWT"
-import jwt from "jsonwebtoken"
+import * as UserController from "./servicePlayers/userController"
+import * as InvitationController from './invitationService/invitationController'
+import * as MatchController from './matchService/matchController'
+import { User, Match, Invitation } from './model/model'
 
 require("dotenv").config();
 

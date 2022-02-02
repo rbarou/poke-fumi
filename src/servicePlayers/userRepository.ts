@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3'
 import fs from 'fs'
-import {User} from './model'
+import {User} from '../model/model'
 
 export default class UserRepository {
   db: Database.Database

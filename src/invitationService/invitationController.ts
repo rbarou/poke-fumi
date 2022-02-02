@@ -1,4 +1,4 @@
-import { Invitation } from './model'
+import { Invitation } from '../model/model'
 import InvitationRepository from './invitationRepository'
 import jwt = require('jsonwebtoken');
 

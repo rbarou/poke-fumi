@@ -1,7 +1,6 @@
 import Database from 'better-sqlite3'
 import fs from 'fs'
-import {Invitation} from './model'
-import bcrpyt from 'bcrypt';
+import {Invitation} from '../model/model'
 
 export default class InvitationRepository {
   db: Database.Database

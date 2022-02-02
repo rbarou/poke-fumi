@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { Match, User } from "./model";
+import { Match, User } from "../model/model";
 import fs from 'fs';
 
 export default class MatchRepository {

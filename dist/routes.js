@@ -20,9 +20,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
-const UserController = __importStar(require("./userController"));
-const InvitationController = __importStar(require("./invitationController"));
-const MatchController = __importStar(require("./matchController"));
+const UserController = __importStar(require("./servicePlayers/userController"));
+const InvitationController = __importStar(require("./invitationService/invitationController"));
+const MatchController = __importStar(require("./matchService/matchController"));
 require("dotenv").config();
 const register = (app) => {
     let connectedUsers = [];
