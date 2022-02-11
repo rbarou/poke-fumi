@@ -1,5 +1,4 @@
 import UserRepository from './userRepository'
-import jwt = require('jsonwebtoken');
 
 const dbUsers: UserRepository = new UserRepository();
 
@@ -18,6 +17,10 @@ const login = (name: string, password: string) => {
   
 const findByName = (name: string) => {
    return dbUsers.getUserByName(name);
+}
+
+const seeMatchs = () => {
+   
 }
 
 export { listUsers, addUser, login, findByName }
