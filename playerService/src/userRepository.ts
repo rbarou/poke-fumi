@@ -7,7 +7,7 @@ export default class UserRepository{
     db: Database.Database;
 
     constructor() {
-        this.db = new Database('../db/users.db', { verbose: console.log });
+        this.db = new Database('db/users.db', { verbose: console.log });
         this.applyMigrations();
     }
 
@@ -32,7 +32,7 @@ export default class UserRepository{
 
     getUserByName(name : string){
         const statement = this.db
-            .prepare("SELECT * FROM users WHERE naùe = ?");
+            .prepare("SELECT * FROM users WHERE name = ?");
         const rows : User[] = statement.get(name);
         return rows; 
     }

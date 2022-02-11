@@ -12,6 +12,7 @@ const addUser = (name : string, password: string) => {
 }
 
 const login = (name : string, password : string) => {
+    return {name: name, password: password};
     return dbUsers.login(name,password);
 }
 

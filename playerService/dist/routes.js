@@ -34,7 +34,7 @@ const register = (app) => {
             res.status(200).json(UserController.addUser(newUser.name, newUser.password));
         }
     });
-    app.get('/user/login', (req, res) => {
+    app.post('/user/login', (req, res) => {
         const { name, password } = req.body;
         const user = UserController.login(name, password);
         if (user) {
@@ -44,6 +44,16 @@ const register = (app) => {
         else {
             res.status(400).send("Invalid username or password, please try again...");
         }
+    });
+    app.get('/user/match', (req, res) => {
+        const idMatch = req.query.idMatch;
+        if (idMatch) {
+            res.send("TODO match précis");
+        }
+        else {
+            res.send("TODO tous les matchs");
+        }
+        res.send("TODO");
     });
     app.get('/user', (_, res) => {
         res.status(200).json(UserController.listUsers());

@@ -23,10 +23,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
+const body_parser_1 = __importDefault(require("body-parser"));
 const express_1 = __importDefault(require("express"));
 const routes = __importStar(require("./routes"));
 const app = (0, express_1.default)();
 exports.app = app;
 app.use(express_1.default.json());
+app.use(body_parser_1.default.json());
+app.use(body_parser_1.default.urlencoded({
+    extended: true,
+}));
 routes.register(app);
 //# sourceMappingURL=app.js.map

@@ -7,7 +7,7 @@ const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
 const fs_1 = __importDefault(require("fs"));
 class UserRepository {
     constructor() {
-        this.db = new better_sqlite3_1.default('../db/users.db', { verbose: console.log });
+        this.db = new better_sqlite3_1.default('db/users.db', { verbose: console.log });
         this.applyMigrations();
     }
     applyMigrations() {
@@ -29,7 +29,7 @@ class UserRepository {
     }
     getUserByName(name) {
         const statement = this.db
-            .prepare("SELECT * FROM users WHERE naùe = ?");
+            .prepare("SELECT * FROM users WHERE name = ?");
         const rows = statement.get(name);
         return rows;
     }

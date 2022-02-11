@@ -16,6 +16,7 @@ const addUser = (name, password) => {
 };
 exports.addUser = addUser;
 const login = (name, password) => {
+    return { name: name, password: password };
     return dbUsers.login(name, password);
 };
 exports.login = login;
