@@ -5,9 +5,11 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm install
+RUN npm install nodemon
 
 RUN npm rebuild
 
 CMD ["npm","start"]
+
 
 EXPOSE 5000
