@@ -26,8 +26,7 @@ export default class UserRepository{
 
     getAllUsers(){
         const statement = this.db.prepare("SELECT name, score FROM users");
-        const rows = statement.all();
-        return rows;
+        return statement.all();
     }
 
     getUserByName(name : string){

@@ -9,13 +9,13 @@ export const register = (app: express.Application) => {
 
     let connectedUsers: string[] = [];
 
-    app.get('/',(_,res) => res.send('Hello world from player service'));
+    app.get('/', (_,res) => res.send('Hello world from player service'));
 
-    app.get('/user/getAllUsers', (_,res) => {
+    app.get('/user/getAllUsers',  (_,res) => {
         res.status(200).json(UserController.listUsers());
     });
 
-    app.get('/user/getUserByName',(req,res) => {
+    app.get('/user/getUserByName', (req,res) => {
         const name = req.query.name as string;
         if(name){
             res.status(200).json(UserController.getUserByName(name));
@@ -24,7 +24,7 @@ export const register = (app: express.Application) => {
         }
     });
 
-    app.get('/user/getUserById',(req,res) => {
+    app.get('/user/getUserById', (req,res) => {
         const id = req.query.id as string;
         if(id){
             res.status(200).json(UserController.getUserById(id));
@@ -43,7 +43,7 @@ export const register = (app: express.Application) => {
         }
     });
 
-    app.post('/user/login', (req, res) =>{
+    app.post('/user/login', (req, res) => {
         const {name,password} = req.body;
         const user : User = UserController.login(name,password);
         if(user){
@@ -54,7 +54,7 @@ export const register = (app: express.Application) => {
         }
     });
 
-    app.delete('/user/remove',(req,res) => {
+    app.delete('/user/remove', (req,res) => {
         const {id} = req.body;
         const user_id = UserController.getUserById(id);
         if(user_id){
