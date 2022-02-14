@@ -23,19 +23,29 @@ class UserRepository {
         }
     }
     getAllUsers() {
-        const statement = this.db.prepare("SELECT * FROM users");
+        const statement = this.db.prepare("SELECT name, score FROM users");
         const rows = statement.all();
         return rows;
     }
     getUserByName(name) {
         const statement = this.db
-            .prepare("SELECT * FROM users WHERE name = ?");
+            .prepare("SELECT user_id, name, score FROM users WHERE name = ?");
         const rows = statement.get(name);
+        return rows;
+    }
+    getUserById(id) {
+        const statement = this.db
+            .prepare("SELECT user_id, name, score FROM users WHERE user_id = ?");
+        const rows = statement.get(id);
         return rows;
     }
     createUser(name, password) {
         const statement = this.db.prepare("INSERT INTO users (name,password) VALUES (?,?)");
         return statement.run(name, password).lastInsertRowid;
+    }
+    removeUser(id) {
+        const statement = this.db.prepare("DELETE FROM users WHERE user_id = ?");
+        return statement.run(id).changes;
     }
     login(name, password) {
         const statement = this.db.prepare("SELECT * FROM users WHERE name = ? AND password = ?");

@@ -2,15 +2,40 @@ import * as express from "express";
 import {User} from './model';
 import * as UserController from './userController';
 
+
 export const register = (app: express.Application) => {
+    const bodyParser = require('body-parser');
+    app.use(bodyParser.urlencoded({ extended: true }));
 
     let connectedUsers: string[] = [];
 
     app.get('/',(_,res) => res.send('Hello world from player service'));
 
-    app.put('/user/register', (req,res) => {
+    app.get('/user/getAllUsers', (_,res) => {
+        res.status(200).json(UserController.listUsers());
+    });
+
+    app.get('/user/getUserByName',(req,res) => {
+        const name = req.query.name as string;
+        if(name){
+            res.status(200).json(UserController.getUserByName(name));
+        }else{
+            res.status(400).json("Please specify a username");
+        }
+    });
+
+    app.get('/user/getUserById',(req,res) => {
+        const id = req.query.id as string;
+        if(id){
+            res.status(200).json(UserController.getUserById(id));
+        }else{
+            res.status(400).json("Please specify an id");
+        }
+    });
+
+    app.post('/user/register', (req,res) => {
         const newUser: User = req.body;
-        const userName = UserController.findByName(newUser.name);
+        const userName = UserController.getUserByName(newUser.name);
         if(userName){
             res.status(400).json("This username is already taken");
         }else{
@@ -27,51 +52,17 @@ export const register = (app: express.Application) => {
         }else{
           res.status(400).send("Invalid username or password, please try again...")
         }
-      });
-    
-    app.get('/user/match', (req,res) => {
-        const idMatch = req.query.idMatch;
-        if(idMatch){
-            res.send("TODO match précis");
+    });
+
+    app.delete('/user/remove',(req,res) => {
+        const {id} = req.body;
+        const user_id = UserController.getUserById(id);
+        if(user_id){
+            UserController.removeUser(id);
+            res.status(200).json("The user: " + id + " has been removed");
         }else{
-            res.send("TODO tous les matchs");
+            res.status(400).send("Please check the user's id");
         }
-        res.send("TODO");
-    });
-
-    app.put('/user/match/invite', (req,res) => {
-        const {name} = req.body;
-        if(name){
-            res.status(200).send("TODO creation match");
-        }else{
-            res.status(200).send("TODO match vide + création requete")
-        }
-    });
-
-    app.get('/user/match/getInvites', (req,res) => {
-        res.status(200).json("TODO get invites");
-    });
-
-    app.post('/user/match/accept', (req,res) => {
-        const idMatch = req.body;
-        res.status(200).json("TODO accept match (changer statut d'un match)");
-    });
-
-    app.post('/user/match/prepareDeck', (req,res) => {
-
-        const match = req.body.idMatch;
-        
-
-        // renvoi id match + deck au service match
-        // le service match cherche le match associé, et change le deck du joueur
-    });
-
-    app.post('/user/match/fightPokemon', (req,res) => {
-        // on envoi le pokemon dans l'arène
-    });
-
-    app.get('/user', (_,res) => {
-        res.status(200).json(UserController.listUsers());
     });
 
 }
