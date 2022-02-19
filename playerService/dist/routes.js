@@ -24,7 +24,6 @@ const UserController = __importStar(require("./userController"));
 const register = (app) => {
     const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({ extended: true }));
-    let connectedUsers = [];
     app.get('/', (_, res) => res.send('Hello world from player service'));
     app.get('/user/getAllUsers', (_, res) => {
         res.status(200).json(UserController.listUsers());
@@ -57,12 +56,11 @@ const register = (app) => {
             res.status(200).json(UserController.addUser(newUser.name, newUser.password));
         }
     });
-    app.post('/user/login', (req, res) => {
+    app.post('/user/connect', (req, res) => {
         const { name, password } = req.body;
         const user = UserController.login(name, password);
         if (user) {
-            connectedUsers.push(user.name);
-            res.status(200).json(connectedUsers);
+            res.status(200).json(user);
         }
         else {
             res.status(400).send("Invalid username or password, please try again...");
