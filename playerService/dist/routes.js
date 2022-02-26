@@ -21,6 +21,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const UserController = __importStar(require("./userController"));
+const authMiddleware_1 = require("./authMiddleware");
 const register = (app) => {
     const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({ extended: true }));
@@ -28,7 +29,7 @@ const register = (app) => {
     app.get('/user/getAllUsers', (_, res) => {
         res.status(200).json(UserController.listUsers());
     });
-    app.get('/user/getUserByName', (req, res) => {
+    app.get('/user/getUserByName', authMiddleware_1.authenticateJWT, (req, res) => {
         const name = req.query.name;
         if (name) {
             res.status(200).json(UserController.getUserByName(name));

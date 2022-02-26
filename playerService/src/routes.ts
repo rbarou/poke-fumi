@@ -1,7 +1,7 @@
 import * as express from "express";
 import {User} from './model';
 import * as UserController from './userController';
-
+import {authenticateJWT} from './authMiddleware' 
 
 export const register = (app: express.Application) => {
     const bodyParser = require('body-parser');
@@ -13,7 +13,7 @@ export const register = (app: express.Application) => {
         res.status(200).json(UserController.listUsers());
     });
 
-    app.get('/user/getUserByName', (req,res) => {
+    app.get('/user/getUserByName', authenticateJWT, (req,res) => {
         const name = req.query.name as string;
         if(name){
             res.status(200).json(UserController.getUserByName(name));

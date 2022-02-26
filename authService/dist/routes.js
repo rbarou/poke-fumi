@@ -33,7 +33,7 @@ const register = (app) => {
         let user_result = yield user_request.json();
         if (user_result) {
             const accessToken = jsonwebtoken_1.default.sign({ name: user_result.name, role: 'player' }, jwt_secret);
-            res.status(200).json(accessToken);
+            res.header('auth-token', accessToken).json(accessToken);
         }
         else {
             res.status(400).json("Username or password incorrect");
