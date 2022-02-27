@@ -9,8 +9,6 @@ export const register = (app: express.Application) => {
 
     app.get('/', (_,res) => res.send('Hello world from fight service'));
 
-    app.post('/toto', (_,res) => fightController.main() )
-
     app.post('/pokemon', (req,res) => {
         const {id} = req.body;
         res.status(200).json(fightController.addPokemonFromPokeAPI(id));
@@ -23,7 +21,6 @@ export const register = (app: express.Application) => {
     app.get('/pokemon', (req,res) => {
         res.status(200).json(fightController.getAllPokemons());
     })
-
     
     app.post('/fight', (req,res) => {
         const {id} = req.body;

@@ -1,11 +1,11 @@
 {
-  "name": "playerservice",
+  "name":"fightservice",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "del /s dist\\*",
-    "build": "tsc && xcopy \"./package.json\" \"dist\\package.json\"",
+    "prebuild": "rm -f -r dist",
+    "build": "tsc && cp \"./package.json\" \"dist\\package.json\"",
     "prestart": "npm run build",
     "start": "ts-node .",
     "debug": "nodemon --inspect=0.0.0.0:9229 dist/index.js"
