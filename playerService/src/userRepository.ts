@@ -25,22 +25,34 @@ export default class UserRepository{
     }
 
     getAllUsers(){
-        const statement = this.db.prepare("SELECT * FROM users");
-        const rows = statement.all();
-        return rows;
+        const statement = this.db.prepare("SELECT name, score FROM users");
+        return statement.all();
     }
 
     getUserByName(name : string){
         const statement = this.db
-            .prepare("SELECT * FROM users WHERE name = ?");
+            .prepare("SELECT user_id, name, score FROM users WHERE name = ?");
         const rows : User[] = statement.get(name);
         return rows; 
+    }
+
+    getUserById(id : string){
+        const statement = this.db
+            .prepare("SELECT user_id, name, score FROM users WHERE user_id = ?");
+        const rows : User[] = statement.get(id);
+        return rows;
     }
 
     createUser(name : string, password : string){
         const statement = 
             this.db.prepare("INSERT INTO users (name,password) VALUES (?,?)");
         return statement.run(name,password).lastInsertRowid;
+    }
+
+    removeUser(id : string){
+        const statement = 
+            this.db.prepare("DELETE FROM users WHERE user_id = ?");
+        return statement.run(id).changes;
     }
 
     login(name : string, password : string){

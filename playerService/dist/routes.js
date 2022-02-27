@@ -21,12 +21,35 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const UserController = __importStar(require("./userController"));
+const authMiddleware_1 = require("./authMiddleware");
 const register = (app) => {
-    let connectedUsers = [];
+    const bodyParser = require('body-parser');
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.get('/', (_, res) => res.send('Hello world from player service'));
-    app.put('/user/register', (req, res) => {
+    app.get('/user/getAllUsers', (_, res) => {
+        res.status(200).json(UserController.listUsers());
+    });
+    app.get('/user/getUserByName', authMiddleware_1.authenticateJWT, (req, res) => {
+        const name = req.query.name;
+        if (name) {
+            res.status(200).json(UserController.getUserByName(name));
+        }
+        else {
+            res.status(400).json("Please specify a username");
+        }
+    });
+    app.get('/user/getUserById', (req, res) => {
+        const id = req.query.id;
+        if (id) {
+            res.status(200).json(UserController.getUserById(id));
+        }
+        else {
+            res.status(400).json("Please specify an id");
+        }
+    });
+    app.post('/user/register', (req, res) => {
         const newUser = req.body;
-        const userName = UserController.findByName(newUser.name);
+        const userName = UserController.getUserByName(newUser.name);
         if (userName) {
             res.status(400).json("This username is already taken");
         }
@@ -34,29 +57,26 @@ const register = (app) => {
             res.status(200).json(UserController.addUser(newUser.name, newUser.password));
         }
     });
-    app.post('/user/login', (req, res) => {
+    app.post('/user/connect', (req, res) => {
         const { name, password } = req.body;
         const user = UserController.login(name, password);
         if (user) {
-            connectedUsers.push(user.name);
-            res.status(200).json(connectedUsers);
+            res.status(200).json(user);
         }
         else {
             res.status(400).send("Invalid username or password, please try again...");
         }
     });
-    app.get('/user/match', (req, res) => {
-        const idMatch = req.query.idMatch;
-        if (idMatch) {
-            res.send("TODO match précis");
+    app.delete('/user/remove', (req, res) => {
+        const { id } = req.body;
+        const user_id = UserController.getUserById(id);
+        if (user_id) {
+            UserController.removeUser(id);
+            res.status(200).json("The user: " + id + " has been removed");
         }
         else {
-            res.send("TODO tous les matchs");
+            res.status(400).send("Please check the user's id");
         }
-        res.send("TODO");
-    });
-    app.get('/user', (_, res) => {
-        res.status(200).json(UserController.listUsers());
     });
 };
 exports.register = register;

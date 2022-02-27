@@ -1,6 +1,7 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import * as routes from './routes';
+import jwt from 'jsonwebtoken'
 
 const app = express();
 app.use(express.json());
