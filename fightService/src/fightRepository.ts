@@ -12,17 +12,20 @@ export default class FightRepository{
 
     applyMigrations(){
         const applyMigration = (path: string) => {
+            console.log("YOUHOUU");
             const migration = fs.readFileSync(path, 'utf8')
+            console.log(migration);
             this.db.exec(migration)
         }
         const isFightTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name = 'fight'").get()
         const isPokemonTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name ='pokemon'").get()
-
-     
         if (!isFightTableExists || !isPokemonTableExists){
             console.log('Applying migrations on DB users...')
-            const migrations = ['db/migrations/init.sql']      
-            migrations.forEach(applyMigration)
+            const migrations = ['db/migrations/init.sql']
+            console.log("Allo ?");
+            console.log(migrations);
+            migrations.forEach(applyMigration);
+            console.log("toujours là ?");
         }
     }
 

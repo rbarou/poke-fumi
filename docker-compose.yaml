@@ -13,6 +13,12 @@ services:
     image: players:v1
     ports: 
       - "5000:5000"
+  fights:
+    image: fights:v1
+    build:
+      context: ./fightService
+    ports:
+      - "5003:5000"
   proxy: 
     image: nginx
     volumes:
@@ -22,3 +28,4 @@ services:
     depends_on:
       - players
       - auth
+      - fights

@@ -1,15 +1,3 @@
---DROP TABLE Pokemon_Type;
---DROP TABLE Type;
-DROP TABLE Fight;
---DROP TABLE Pokemon;
-
-
-
-CREATE TABLE IF NOT EXISTS Pokemon (
-  pokemon_id INTEGER PRIMARY KEY ,
-  name TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Fight (
   fight_id INTEGER PRIMARY KEY AUTOINCREMENT,
   match_id INTEGER DEFAULT 1 ,
@@ -19,6 +7,11 @@ CREATE TABLE IF NOT EXISTS Fight (
 
   FOREIGN KEY(pokemon1) REFERENCES pokemon(pokemon_id),
   FOREIGN KEY(pokemon2) REFERENCES pokemon(pokemon_id)
+);
+
+CREATE TABLE IF NOT EXISTS Pokemon (
+  pokemon_id INTEGER PRIMARY KEY ,
+  name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Pokemon_Type(

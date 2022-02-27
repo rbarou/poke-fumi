@@ -9,7 +9,7 @@ export const register = (app: express.Application) => {
 
     app.get('/', (_,res) => res.send('Hello world from player service'));
 
-    app.get('/user/getAllUsers',  (_,res) => {
+    app.get('/user/getAllUsers', authenticateJWT, (_,res) => {
         res.status(200).json(UserController.listUsers());
     });
 
@@ -22,7 +22,7 @@ export const register = (app: express.Application) => {
         }
     });
 
-    app.get('/user/getUserById', (req,res) => {
+    app.get('/user/getUserById', authenticateJWT, (req,res) => {
         const id = req.query.id as string;
         if(id){
             res.status(200).json(UserController.getUserById(id));
@@ -51,7 +51,7 @@ export const register = (app: express.Application) => {
         }
     });
 
-    app.delete('/user/remove', (req,res) => {
+    app.delete('/user/remove', authenticateJWT, (req,res) => {
         const {id} = req.body;
         const user_id = UserController.getUserById(id);
         if(user_id){
