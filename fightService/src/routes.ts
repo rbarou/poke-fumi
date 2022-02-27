@@ -1,53 +1,41 @@
 import * as express from "express";
-//import * as AdminController from "./adminController";
-//import {User} from './model';
-//import * as UserController from './userController';
+import * as fightController from"./fightController";
 
 
 export const register = (app: express.Application) => {
+    
     const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({ extended: true }));
 
-    app.get('/', (_,res) => res.send('Hello world from player service'));
+    app.get('/', (_,res) => res.send('Hello world from fight service'));
 
-    app.get('/user/getAllUsers',  (_,res) => {
-        res.status(200).json(UserController.listUsers());
-    });
+    app.post('/toto', (_,res) => fightController.main() )
 
-    app.get('/user/getUserByName', (req,res) => {
-        const name = req.query.name as string;
-        if(name){
-            res.status(200).json(UserController.getUserByName(name));
-        }else{
-            res.status(400).json("Please specify a username");
-        }
-    });
+    app.post('/pokemon', (req,res) => {
+        const {id} = req.body;
+        res.status(200).json(fightController.addPokemonFromPokeAPI(id));
+    })
+    app.get('/pokemon/:id', (req,res) => {
+        const id = parseInt(req.params.id)
+        res.status(200).json(fightController.getPokemon(id));
+    })
 
-    app.get('/user/getUserById', (req,res) => {
-        const id = req.query.id as string;
-        if(id){
-            res.status(200).json(UserController.getUserById(id));
-        }else{
-            res.status(400).json("Please specify an id");
-        }
-    });
+    app.get('/pokemon', (req,res) => {
+        res.status(200).json(fightController.getAllPokemons());
+    })
 
-    app.post('/user/register', (req,res) => {
-        const newUser: User = req.body;
-        const userName = UserController.getUserByName(newUser.name);
-        if(userName){
-            res.status(400).json("This username is already taken");
-        }else{
-            res.status(200).json(UserController.addUser(newUser.name,newUser.password));
-        }
-    });
+    
+    app.post('/fight', (req,res) => {
+        const {id} = req.body;
+        res.status(200).json(fightController.createFight(id));
+    })
 
-    app.post('/user/connect', (req, res) => {
-        const {name,password} = req.body;
-        const user : User = UserController.login(name,password);
-        if(user){
-          res.status(200).json(user);
-        }else{
-          res.status(400).send("Invalid username or password, please try again...")
-        }
-    });
+    app.get('/fight', (req,res) => {
+        res.status(200).json(fightController.getAllFights());
+    })
+
+    app.put('/fight/pokemon', (req,res) => {
+        const {fight, pokemon} = req.body;
+        res.status(200).json(fightController.sendPokemonToArena(fight,pokemon));
+    }) 
+}
