@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS match (
+  match_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  state TEXT NOT NULL,
+  user1 INTEGER NOT NULL,
+  user2 INTEGER NOT NULL,
+  CONSTRAINT fk_user
+    FOREIGN KEY (user1,user2)
+    REFERENCES users(user_id,user_id)
+);
