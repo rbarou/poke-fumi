@@ -6,4 +6,12 @@ const listMatchs = () => {
     return dbMatchs.getAllMatchs();
 }
 
-export {listMatchs};
+const checkInvites = (user_id : string) => {
+    return dbMatchs.getInvites(user_id);
+}
+
+const createMatch = (inviter : string, name : string, invitee : string) => {
+    return dbMatchs.createMatch(inviter, name, invitee);
+}
+
+export {listMatchs, checkInvites, createMatch};

@@ -24,7 +24,21 @@ export default class MatchRepository{
     }
 
     getAllMatchs(){
-        
+        const statement = this.db.prepare("SELECT match_id, name, state FROM match");
+        return statement.all();
+    }
+
+    createMatch(inviter : string, name : string, invitee : string){
+        const statement = this.db.prepare(
+            "INSERT INTO match (name,user1,user2,state) VALUES (?,?,?,'requested')"
+        )
+        return statement.run(name,inviter,invitee);
+    }
+
+    getInvites(user_id : string){
+        const statement = this.db
+            .prepare("SELECT name FROM match WHERE user2 = ? AND state = 'requested'");
+        return statement.get(user_id);
     }
 
 }
