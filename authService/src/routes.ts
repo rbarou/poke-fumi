@@ -21,15 +21,15 @@ export const register = (app: express.Application) => {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
-              },
+            },
             body: JSON.stringify(req.body)
         });
 
         let user_result = await user_request.json();
 
         if(user_result){
-            const accessToken = jwt.sign({name:user_result.name, role:'player'},jwt_secret)
-            res.status(200).json(accessToken);
+            const accessToken = jwt.sign({name:user_result.name, role:'player'},jwt_secret);
+            res.header('auth-token',accessToken).json(accessToken);
         }else{
             res.status(400).json("Username or password incorrect")
         }

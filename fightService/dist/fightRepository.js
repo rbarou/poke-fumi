@@ -51,7 +51,9 @@ class FightRepository {
         if (!isFightTableExists || !isPokemonTableExists) {
             console.log('Applying migrations on DB users...');
             const migrations = ['db/migrations/init.sql'];
+            console.log("Allo ?");
             migrations.forEach(applyMigration);
+            console.log("toujours là ?");
         }
     }
     getAllFights() {
