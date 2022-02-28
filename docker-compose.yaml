@@ -1,11 +1,10 @@
 services:
   auth:
+    image: auth:v1
     build:
       context: ./authService
     ports:
-      - "5001:5001"
-    volumes:
-      - ./authService/src:/usr/src/app/src
+      - "5001:5000"
     depends_on: 
       - players
     command : npm run debug
@@ -19,6 +18,11 @@ services:
       context: ./fightService
     ports:
       - "5003:5000"
+  matchs:
+    build:
+      context: ./matchService
+    ports:
+      - "5004:5000"
   proxy: 
     image: nginx
     volumes:
@@ -29,3 +33,4 @@ services:
       - players
       - auth
       - fights
+      - matchs
