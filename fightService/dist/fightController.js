@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPokemon = exports.sendPokemonToArena = exports.getAllFights = exports.createFight = exports.getAllPokemons = exports.addPokemonFromPokeAPI = void 0;
+exports.getPokemon = exports.sendPokemonToArena = exports.getAllFights = exports.createFight = exports.getAllPokemons = exports.main = exports.addPokemonFromPokeAPI = void 0;
 const fightRepository_1 = __importDefault(require("./fightRepository"));
 const cross_fetch_1 = __importDefault(require("cross-fetch"));
 const db = new fightRepository_1.default();
@@ -58,6 +58,20 @@ const getAllFights = () => {
     return db.getAllFights();
 };
 exports.getAllFights = getAllFights;
+const main = () => {
+    const pokemonsUrl = 'https://pokeapi.co/api/v2/pokemon-form/1';
+    (0, cross_fetch_1.default)(pokemonsUrl)
+        .then(res => {
+        if (res.status >= 400) {
+            throw new Error("Bad response from server");
+        }
+        return res.json();
+    })
+        .then(data => {
+        console.log(data.name);
+    });
+};
+exports.main = main;
 const createFight = (idMatch) => {
     db.createFight(idMatch);
 };

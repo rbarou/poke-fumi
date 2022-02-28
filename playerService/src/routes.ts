@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as AdminController from "./adminController";
 import {User} from './model';
 import * as UserController from './userController';
 import {authenticateJWT} from './authMiddleware' 
@@ -55,11 +56,22 @@ export const register = (app: express.Application) => {
         const {id} = req.body;
         const user_id = UserController.getUserById(id);
         if(user_id){
-            UserController.removeUser(id);
+            AdminController.removeUser(id);
             res.status(200).json("The user: " + id + " has been removed");
         }else{
             res.status(400).send("Please check the user's id");
         }
     });
+
+    app.put('/user/update', (req,res) => {
+        const {id, name, password} = req.body;
+        const user_id = UserController.getUserById(id);
+        if(user_id){
+            AdminController.updateUser(id,name,password);
+            res.status(200).json("The user: " + id + " has been modified");
+        } else {
+            res.status(400).send("Please check the user's id");
+        }
+    })
 
 }
