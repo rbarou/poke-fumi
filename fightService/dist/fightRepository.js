@@ -30,7 +30,6 @@ class FightRepository {
             const isFirst = this.db.prepare("SELECT * FROM fight WHERE fight_id = " + idFight + " AND pokemon1 IS NULL").get();
             if (!isFirst) {
                 i = 2;
-                console.log("DETERMINER QUI EST LE VAINQUEUR");
             }
             const statement = this.db.prepare("UPDATE fight SET pokemon" + i + " = ? WHERE fight_id = ?");
             statement.run(idPokemon, idFight).lastInsertRowid;
@@ -49,11 +48,9 @@ class FightRepository {
         const isFightTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name = 'fight'").get();
         const isPokemonTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name ='pokemon'").get();
         if (!isFightTableExists || !isPokemonTableExists) {
-            console.log('Applying migrations on DB users...');
+            console.log('Applying migrations on DB fights...');
             const migrations = ['db/migrations/init.sql'];
-            console.log("Allo ?");
             migrations.forEach(applyMigration);
-            console.log("toujours là ?");
         }
     }
     getAllFights() {
@@ -69,7 +66,6 @@ class FightRepository {
     getPokemon(id) {
         const statement = this.db.prepare(`SELECT * FROM Pokemon AS p INNER JOIN Pokemon_Type AS pt ON p.pokemon_id = pt.pokemon_id INNER JOIN Type AS t ON pt.type_id = t.type_id WHERE pt.pokemon_id = ?`);
         const rows = statement.all(id);
-        console.log(rows);
         return rows;
     }
     addPokemon(pokemon_id, name) {
@@ -99,8 +95,6 @@ class FightRepository {
                 default:
             }
         }
-        console.log("DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        console.log(data);
         const model = {
             pokemon_id: id,
             name: data[0].name,
@@ -184,7 +178,6 @@ class FightRepository {
     getFight(id) {
         const statement = this.db.prepare(`SELECT * FROM Fight WHERE fight_id = '${id}'`);
         const rows = statement.all();
-        console.log(rows);
         return rows;
     }
     getFightModel(id) {

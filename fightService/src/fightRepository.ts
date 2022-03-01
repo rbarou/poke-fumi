@@ -12,20 +12,15 @@ export default class FightRepository{
 
     applyMigrations(){
         const applyMigration = (path: string) => {
-            console.log("YOUHOUU");
             const migration = fs.readFileSync(path, 'utf8')
-            console.log(migration);
             this.db.exec(migration)
         }
         const isFightTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name = 'fight'").get()
         const isPokemonTableExists = this.db.prepare("SELECT name FROM sqlite_schema WHERE type = 'table' AND name ='pokemon'").get()
         if (!isFightTableExists || !isPokemonTableExists){
-            console.log('Applying migrations on DB users...')
+            console.log('Applying migrations on DB fights...')
             const migrations = ['db/migrations/init.sql']
-            console.log("Allo ?");
-            console.log(migrations);
             migrations.forEach(applyMigration);
-            console.log("toujours là ?");
         }
     }
 
@@ -45,7 +40,6 @@ export default class FightRepository{
     getPokemon(id:number){
         const statement = this.db.prepare(`SELECT * FROM Pokemon AS p INNER JOIN Pokemon_Type AS pt ON p.pokemon_id = pt.pokemon_id INNER JOIN Type AS t ON pt.type_id = t.type_id WHERE pt.pokemon_id = ?`);
         const rows = statement.all(id);
-        console.log(rows);
         return rows;
     }
 
@@ -72,23 +66,22 @@ export default class FightRepository{
 
 
     createFight = (idMatch : number) => {
-        const statement = this.db.prepare("INSERT INTO fight (match_id) VALUES (?) ");
+        const statement = this.db.prepare("INSERT INTO Fight (match_id) VALUES (?) ");
         return statement.run(idMatch).lastInsertRowid;
     }
 
     sendPokemonToArena = (idFight : number, idPokemon : number) => {
         let i = 1;
-        const isFirst = this.db.prepare("SELECT * FROM fight WHERE fight_id = " + idFight + " AND pokemon1 IS NULL").get();
+        const isFirst = this.db.prepare("SELECT * FROM Fight WHERE fight_id = " + idFight + " AND pokemon1 IS NULL").get();
         if(!isFirst){
             i = 2;
-            console.log("DETERMINER QUI EST LE VAINQUEUR")
         }
-        const statement = this.db.prepare("UPDATE fight SET pokemon" + i + " = ? WHERE fight_id = ?" );
+        const statement = this.db.prepare("UPDATE Fight SET pokemon" + i + " = ? WHERE fight_id = ?" );
         statement.run(idPokemon, idFight).lastInsertRowid;
     }
 
     isFightStart = (idFight : number) => {
-        return this.db.prepare("SELECT * FROM fight WHERE fight_id = " + idFight + " AND pokemon1 IS NOT NULL AND pokemon2 IS NOT NULL").get();
+        return this.db.prepare("SELECT * FROM Fight WHERE fight_id = " + idFight + " AND pokemon1 IS NOT NULL AND pokemon2 IS NOT NULL").get();
     }
 
     getPokemonModel(id:number){
@@ -116,8 +109,6 @@ export default class FightRepository{
             }
         }
 
-        console.log("DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        console.log(data);
         const model : Pokemon = {
             pokemon_id: id,
             name: data[0].name,
@@ -204,7 +195,6 @@ export default class FightRepository{
     getFight(id:number){
         const statement = this.db.prepare(`SELECT * FROM Fight WHERE fight_id = '${id}'`);
         const rows = statement.all();
-        console.log(rows);
         return rows;
     }
 
