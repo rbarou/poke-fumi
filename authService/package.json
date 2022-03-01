@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "rm -f -r dist",
-    "build": "tsc && cp \"./package.json\" \"dist\\package.json\"",
+    "prebuild": "del /s dist\\*",
+    "build": "tsc && xcopy \"./package.json\" \"dist\\package.json\"",
     "prestart": "npm run build",
     "start": "ts-node .",
     "debug": "nodemon --inspect=0.0.0.0:9229 dist/index.js"
@@ -27,6 +27,9 @@
     "cross-fetch": "^3.1.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
-    "jsonwebtoken": "^8.5.1"
+    "fetch": "^1.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^3.2.0",
+    "request": "^2.88.2"
   }
 }

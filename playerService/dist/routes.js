@@ -20,6 +20,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
+const AdminController = __importStar(require("./adminController"));
 const UserController = __importStar(require("./userController"));
 const authMiddleware_1 = require("./authMiddleware");
 const register = (app) => {
@@ -38,7 +39,7 @@ const register = (app) => {
             res.status(400).json("Please specify a username");
         }
     });
-    app.get('/user/getUserById', (req, res) => {
+    app.get('/user/getUserById', authMiddleware_1.authenticateJWT, (req, res) => {
         const id = req.query.id;
         if (id) {
             res.status(200).json(UserController.getUserById(id));
@@ -71,8 +72,19 @@ const register = (app) => {
         const { id } = req.body;
         const user_id = UserController.getUserById(id);
         if (user_id) {
-            UserController.removeUser(id);
+            AdminController.removeUser(id);
             res.status(200).json("The user: " + id + " has been removed");
+        }
+        else {
+            res.status(400).send("Please check the user's id");
+        }
+    });
+    app.put('/user/update', (req, res) => {
+        const { id, name, password } = req.body;
+        const user_id = UserController.getUserById(id);
+        if (user_id) {
+            AdminController.updateUser(id, name, password);
+            res.status(200).json("The user: " + id + " has been modified");
         }
         else {
             res.status(400).send("Please check the user's id");

@@ -32,8 +32,7 @@ export default class MatchRepository{
     getMatchDetails(match_id : number){
         const statement = this.db
             .prepare("SELECT status, user1_id, user2_id, match_id FROM matchs WHERE match_id = ?");
-        const rows : Match[] = statement.get(match_id);
-        return rows; 
+        return statement.get(match_id);
     }
 
     createMatch(user1_id : number, user2_id : number){

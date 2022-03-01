@@ -5,7 +5,7 @@ import fetch from 'cross-fetch';
 
 const path = require('path');
 
-const userServiceURL : string = 'http://localhost:5000';
+const userServiceURL : string = 'localhost/api/players/user/';
 
 export const register = (app: express.Application) => {
 
@@ -15,7 +15,7 @@ export const register = (app: express.Application) => {
         res.status(200).json(MatchController.listMatchs());
     });
 
-    app.get('/match/getMatch', (req,res) => {
+    app.get('/match/getMatch', async (req,res) => {
         const match_id : number = +req.body.match_id;
         if(match_id){
             res.status(200).json(MatchController.getMatchDetails(match_id));
@@ -24,25 +24,22 @@ export const register = (app: express.Application) => {
         }
     })
 
-    app.put('/match/invite', async (req,response) => {
+    app.put('/match/invite', async (req,res) => {
 
         const userRequest = 'http://localhost:5000/user/getUserById?id=1';
 
         const user1_id : number = +req.body.host;
         const user2_id : number = +req.body.guest;
 
-        fetch(userRequest)
+        await fetch(userRequest)
         .then( res => {
-            if (res.status >= 400) {
-                throw new Error("Bad response from server");
-                }
-                return res.json;
+            return res.json;
         })
         .then( user => {
             if(user){
-                response.json(MatchController.createMatch(user1_id,user2_id));
+                res.json(MatchController.createMatch(user1_id,user2_id));
             }else{
-                response.status(400).json("Guest doesn't exist");
+                res.status(400).json("Guest doesn't exist");
             }}
         )
     });
@@ -64,7 +61,7 @@ export const register = (app: express.Application) => {
     });
 
     app.post('/match/deck', async(req,res) => {
-        const userID : number = +req.headers.userID;
+        const userID : number = +req.body.userID;
         const matchID : number = +req.body.matchID;
         if (matchID){
             res.status(200).json(MatchController.createDeck(userID,matchID));
@@ -74,7 +71,7 @@ export const register = (app: express.Application) => {
     });
 
     app.post('/match/deck/pokemon', async(req,res) => {
-        const userID : number = +req.headers.userID;
+        const userID : number = +req.body.userID;
         const matchID : number = +req.body.matchID;
         const pokemonID : number = +req.body.pokemonID;
         if (matchID && pokemonID){
@@ -84,7 +81,4 @@ export const register = (app: express.Application) => {
         }
         
     });
-
-
-    //app.put('/match/deck/')
 }

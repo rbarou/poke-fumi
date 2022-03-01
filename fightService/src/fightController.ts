@@ -70,7 +70,7 @@ const sendPokemonToArena = (idFight: number, idPokemon : number) => {
     if(db.isFightStart(idFight)){
         fightModel = db.getFightModel(idFight);
         winner = db.determineWinner(fightModel.pokemon1, fightModel.pokemon2);
-        console.log("LE GAGNANT EST " + winner.name);
+        return winner.name;
     }
 
 }

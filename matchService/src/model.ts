@@ -3,7 +3,6 @@ export interface Match{
     user1_id: number;
     user2_id: number;
     status: string;
-    deck_id: number;
 }
 
 export interface Deck{

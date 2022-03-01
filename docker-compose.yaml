@@ -18,11 +18,16 @@ services:
       context: ./fightService
     ports:
       - "5003:5000"
+    depends_on:
+      - auth
   matchs:
+    image: matchs:v1
     build:
       context: ./matchService
     ports:
       - "5004:5000"
+    depends_on:
+      - players
   proxy: 
     image: nginx
     volumes:
